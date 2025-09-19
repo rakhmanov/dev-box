@@ -33,7 +33,7 @@ install_tools:
     just install_and_set terraform latest
     just install_and_set kubectl latest
     just install_and_set awscli latest
-    just install_and_set terragrunt latest
+    just install_and_set terragrunt 0.87.4
 
 # Use after connecting to the WSL via VS Code
 vscode_extensions:
