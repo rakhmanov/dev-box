@@ -6,6 +6,7 @@ default:
 bootstrap name="" email="":
     just apt_inits
     just set_git_config "{{name}}" "{{email}}"
+    chmod +x ./scripts/*
     ./scripts/zsh_setup.sh
     ./scripts/install_go.sh
     ./scripts/asdf_setup.sh
