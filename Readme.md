@@ -1,116 +1,105 @@
-# 🛠️ Ubuntu 24.04+ Dev Environment Setup (Tested on WSL2)
+# Ubuntu 24.04 Dev Environment (WSL2-Friendly)
 
-This scaffolds a clean developer environment using `just` and provides steps to create a new WSL profile based on Ubuntu 24.04.
+This repo bootstraps a development environment with `just`, `fish`, and `mise`.
+Tool installs are pinned to major/minor version lines in `Justfile` for repeatable bootstraps.
 
----
+## What Gets Installed
 
-Includes:
+- Core packages: `build-essential`, `git`, `curl`, `wget`, `unzip`, `fzf`, `yq`, `jq`, `ripgrep`, `fd-find`
+- Shell/runtime manager: `fish`, `mise`
+- Languages/tools: `go`, `python`, `nodejs`, `terraform`, `terragrunt`, `kubectl`, `awscli`, `task`, `helm`, `kustomize`, `starship`
+- Kubernetes extras: `krew`, `kubectl-ns`, `kubectl-ctx`, `node-shell`
 
-    - zsh
-        - build-essential, yq, jq, git, fzf, curl, wget, unzip
-    - oh-my-zsh
-    - golang
-    - asdf (items below installed by asdf:)
-    - kubectl
-        - krew
-        - kubectl-ns
-        - kubectl-ctx
-        - node-shell
-    - helm
-    - kustomize
-    - terraform
-    - terragrunt
-    - python
-    - nodejs
-    - awscli
-    - task
+## Quick Start (Inside an Existing Ubuntu WSL)
 
-
-## 📦 Prerequisites
-
-### Install `just` task runner
-
+1. Install `just`.
 ```bash
-sudo apt install --update just
+sudo apt update
+sudo apt install -y just
 ```
 
----
-
-## 🚀 Usage
-
-### Checkout
+2. Run bootstrap from this repo.
 ```bash
-git clone --depth=1 https://github.com/Rakhmanov/dev-box.git
-cd dev-box
-```
-
-### Bootstrap your dev environment
 just bootstrap "Full Name" "email@example.com"
-Running bootstrap requires providing 2 parameter, which will be used to configure git.
-
-1) Full Name
-2) E-mail
-
-```bash
-just bootstrap "Denis Shatilov" "shatilov18@gmail.com"
 ```
 
-### Install tools only
-
+3. Optional: install only managed tools.
 ```bash
 just install_tools
 ```
 
----
+4. Optional: run full OS package upgrade.
+```bash
+just apt_full_upgrade
+```
 
-## Set Up WSL
+## WSL Provisioning (Windows Host)
 
-### 1. Download the Ubuntu 24.04 Image
+Use this section only if you want to create a fresh distro/profile.
 
+### 1. Choose a Base Tar
+
+Option A: Download Ubuntu 24.04 cloud image.
+
+Run in `Windows PowerShell`:
+```powershell
+wsl --shutdown
+```
+
+Run in `Ubuntu/WSL shell` or any Linux shell:
 ```bash
 wget https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64-root.tar.xz -O ubuntu-24.04.tar.xz
 ```
 
-### 2. Export an Existing Image (Optional)
-Keep in mind the format is tar and it's not compressed.
+Option B: Export an existing distro.
 
+Run in `Windows PowerShell`:
 ```powershell
 wsl --export Ubuntu-24.04 existing-ubuntu-24.04.tar
 ```
 
-### 3. Import the Image
+### 2. Import as a New Distro
 
+Run in `Windows PowerShell`:
 ```powershell
 wsl --import dev-box C:\WSL\dev-box ubuntu-24.04.tar.xz
 ```
 
-### 4. Load image
+### 3. First Boot and User Setup
+
+Run in `Windows PowerShell`:
 ```powershell
-wsl -d dev-box
+wsl -d dev-box -u root
 ```
 
-### 5. Create a User (inside the WSL instance)
-
+Then run inside that Linux shell:
 ```bash
 USERNAME=admin
-useradd -m -s /bin/bash -g admin $USERNAME
+useradd -m -s /bin/bash "$USERNAME"
 echo "$USERNAME:password" | chpasswd
-usermod -aG sudo $USERNAME
-echo -e "[user]\ndefault=admin" | tee /etc/wsl.conf
+usermod -aG sudo "$USERNAME"
+printf "[user]\ndefault=%s\n" "$USERNAME" | tee /etc/wsl.conf
+exit
 ```
 
-### 6. Shutdown so /etc/wsl.conf changes woule be re-read.
-```powershell
-wsl.exe --shutdown
-```
+### 4. Re-open as the New User
 
-### 7. Turn on the WSL distribution
+Run in `Windows PowerShell`:
 ```powershell
+wsl --terminate dev-box
 wsl -d dev-box
 ```
 
-### 8. (Optional) Set Default Distro via PowerShell
-
+Optional: set as default distro.
 ```powershell
 wsl --set-default dev-box
+```
+
+### 5. Bootstrap This Repo
+
+Inside `dev-box`:
+```bash
+cd /mnt/c/Projects/dev-os
+sudo apt update && sudo apt install -y just
+just bootstrap "Full Name" "email@example.com"
 ```
