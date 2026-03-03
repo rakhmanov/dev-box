@@ -1,6 +1,6 @@
 # Usage: add_once_to_file "grep_query" "block_to_add" [file]
 add_once_to_file() {
-  local marker="$1"      # e.g. "asdf shims path"
+  local marker="$1"
   local block="$2"
   local file="${3:-$HOME/.path_additions}"
 
