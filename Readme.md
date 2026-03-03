@@ -75,10 +75,13 @@ wsl -d dev-box -u root
 Then run inside that Linux shell:
 ```bash
 USERNAME=admin
-useradd -m -s /bin/bash "$USERNAME"
-echo "$USERNAME:password" | chpasswd
+PASSWORD=password
+
+useradd -m -s /bin/bash -g admin "$USERNAME"
+echo "$USERNAME:$PASSWORD" | chpasswd
 usermod -aG sudo "$USERNAME"
-printf "[user]\ndefault=%s\n" "$USERNAME" | tee /etc/wsl.conf
+
+printf "[user]\ndefault=%s\n" "$USERNAME" > /etc/wsl.conf
 exit
 ```
 
@@ -97,7 +100,12 @@ wsl --set-default dev-box
 
 ### 5. Bootstrap This Repo
 
+```powershell
+wsl -d dev-box
+```
+
 Inside `dev-box`:
+
 ```bash
 cd /mnt/c/Projects/dev-os
 sudo apt update && sudo apt install -y just
