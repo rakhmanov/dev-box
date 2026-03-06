@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x  # Add this line for debugging
 
 COMPLETIONS_DIR="$HOME/.config/fish/completions"
 mkdir -p "$COMPLETIONS_DIR"
@@ -14,7 +15,7 @@ write_placeholder() {
 EOF
 }
 
-if command -v docker >/dev/null 2>&1; then
+if docker version >/dev/null 2>&1; then
   docker completion fish >"$COMPLETIONS_DIR/docker.fish"
 else
   write_placeholder "$COMPLETIONS_DIR/docker.fish" "docker"

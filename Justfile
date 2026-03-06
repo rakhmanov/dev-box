@@ -27,7 +27,7 @@ bootstrap name="" email="":
 apt_prepare:
     sudo apt update
     sudo apt install -y git curl wget unzip build-essential \
-    fish fonts-powerline fontawesome fzf yq jq ripgrep fd-find \
+    fish fzf yq jq ripgrep fd-find \
     libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
     libsqlite3-dev llvm libncurses5-dev libncursesw5-dev \
     xz-utils tk-dev libffi-dev liblzma-dev 
@@ -41,6 +41,7 @@ set_git_config name email:
 
 install_tools:
     just install_and_set go {{go_version}}
+    just install_and_set usage latest
     just install_and_set nodejs {{nodejs_version}}
     just install_and_set python {{python_version}}
     just install_and_set terraform {{terraform_version}}
