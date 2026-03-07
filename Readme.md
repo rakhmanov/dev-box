@@ -34,7 +34,6 @@ just apt_full_upgrade
 ```
 
 ## WSL Provisioning (Windows Host)
-
 Use this section only if you want to create a fresh distro/profile.
 
 ### 1. Choose a Base Tar
@@ -110,4 +109,10 @@ Inside `dev-box`:
 cd /mnt/c/Projects/dev-os
 sudo apt update && sudo apt install -y just
 just bootstrap "Full Name" "email@example.com"
+```
+
+---
+Issue with interop and Rancher Desktop
+```
+sudo sh -c 'echo :WSLInterop:M::MZ::/init:PF > /usr/lib/binfmt.d/WSLInterop.conf'
 ```
