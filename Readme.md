@@ -115,5 +115,5 @@ just bootstrap "Full Name" "email@example.com"
 Issue with interop and Rancher Desktop
 ```
 sudo sh -c 'echo :WSLInterop:M::MZ::/init:PF > /usr/lib/binfmt.d/WSLInterop.conf'
-udo sh -c 'cat /usr/lib/binfmt.d/WSLInterop.conf > /proc/sys/fs/binfmt_misc/register'
+sudo sh -c 'cat /usr/lib/binfmt.d/WSLInterop.conf > /proc/sys/fs/binfmt_misc/register'
 ```

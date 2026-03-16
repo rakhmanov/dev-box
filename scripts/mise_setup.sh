@@ -11,6 +11,22 @@ if [ ! -x "$MISE_BIN" ]; then
   curl https://mise.run | sh
 fi
 
+MARKER='MISE_PATH'
+BLOCK=$(cat <<'EOF'
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
+EOF
+)
+add_once_to_file "$MARKER" "$BLOCK"
+
+PROFILE_MARKER='PATH_ADDITIONS'
+PROFILE_BLOCK=$(cat <<'EOF'
+if [ -f "$HOME/.path_additions" ]; then
+  . "$HOME/.path_additions"
+fi
+EOF
+)
+add_once_to_file "$PROFILE_MARKER" "$PROFILE_BLOCK" "$HOME/.profile"
+
 FISH_CONF_DIR="$HOME/.config/fish/conf.d"
 mkdir -p "$FISH_CONF_DIR"
 

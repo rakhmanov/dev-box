@@ -1,12 +1,12 @@
 set shell := ["bash", "-cu"]
 
-go_version := "1.24.3"
-nodejs_version := "22"
+go_version := "1.26"
+nodejs_version := "24"
 python_version := "3.12"
-terraform_version := "1.9"
-kubectl_version := "1.31"
-awscli_version := "2"
-terragrunt_version := "0.72"
+terraform_version := "1"
+kubectl_version := "latest"
+awscli_version := "latest"
+terragrunt_version := "latest"
 starship_version := "1"
 task_version := "3"
 
